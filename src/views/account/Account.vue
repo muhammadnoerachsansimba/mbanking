@@ -42,9 +42,12 @@
 
         <main>
             <div class="px-10 max-sm:px-5 text-center mt-5">
-                <Title>
-                    <template #title>{{ user.data.first_name + " " + user.data.last_name }}</template>
-                </Title>
+                <div class="space-y-2">
+                    <p class="text-center text-lg">Hi,</p>
+                    <Title>
+                        <template #title>{{ user.data.first_name + " " + user.data.last_name }}</template>
+                    </Title>
+                </div>
                 <button type="button" class="mt-10 py-3 bg-red-500 w-full text-white font-semibold rounded-full" @click="logout">
                     Logout
                 </button>
