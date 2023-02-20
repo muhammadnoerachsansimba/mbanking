@@ -3,8 +3,9 @@
 </script>
 
 <template>
-    <div>
-        
+    <div class="flex justify-between px-10 py-5 max-sm:px-5">
+        <slot name="text-left"></slot>
+        <slot name="text-right"></slot>
     </div>
 </template>
 

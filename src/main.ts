@@ -21,18 +21,35 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 
 // import fontawesome solid icon
 import {
-    faUser
+    faUser as fasUser,
+    faPlus,
+    faMagnifyingGlass,
+    faHouse,
+    faArrowTrendUp,
+    faArrowLeftLong
 } from "@fortawesome/free-solid-svg-icons"
 
 // import fontawesome regular icon
-
+import {
+    faBell,
+    faCreditCard,
+    faUser
+} from "@fortawesome/free-regular-svg-icons"
 
 // import fontawesome brand icon
 
 
 // add fontawesome icon from library
 library.add(
-    faUser
+    faUser,
+    fasUser,
+    faPlus,
+    faBell,
+    faMagnifyingGlass,
+    faCreditCard,
+    faHouse,
+    faArrowTrendUp,
+    faArrowLeftLong
 )
 
 // inisialize pinia

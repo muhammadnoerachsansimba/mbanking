@@ -3,9 +3,11 @@
     import { useRouter } from "vue-router"
     import TextInput from "@/components/Text.input.vue"
     import Title from "@/components/Title.vue"
+    import { useAuthStore } from "@/stores/auth"
     import { AuthViewModel } from "./Auth.viewmodel"
 
     const router = useRouter()
+    const auth = useAuthStore()
     const vm = ref(new AuthViewModel())
     const user = JSON.parse(localStorage.getItem("user") || "{}")
 
@@ -15,7 +17,7 @@
         })
     }
     
-    async function login(): Promise<void> {
+    async function login() {
         try {
             await vm.value.login()
             router.push({
