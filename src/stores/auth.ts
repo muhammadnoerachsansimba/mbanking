@@ -1,34 +1,49 @@
 import { defineStore } from "pinia"
 import axios from "axios"
 
+export class User {
+    username: string = ""
+    password: string = ""
+}
+
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        authUser: null,
-        fisrt_name: "",
-        last_name: "",
-        username: "",
-        password: "",
-        message: "",
+        authUser: null as User | null,
         isLogIn: false
     }),
     getters: {
         user: (state) => state.authUser
     },
     actions: {
-        async login() {
-            if(this.username != "" || this.password != "") {
+        async login(username: string, password: string): Promise<any> {
+            if(username != "" || password != "") {
+                let user: object
                 const data = await axios.get("http://localhost:4500/sign_in", {
                     params: {
-                        username: this.username,
-                        password: this.password
+                        username: username,
+                        password: password
                     }
                 })
                 this.isLogIn = true
                 this.authUser = data.data[0]
-                return data.data
+                user = {
+                    "data": this.authUser,
+                    "isLogin": this.isLogIn
+                }
+                localStorage.setItem("user", JSON.stringify(user))
+                return this.authUser
             } else {
-                return this.message = "Username or password cannot be empty!"
+                throw new Error("Username or Password is empty!")
             }
+        },
+        async logout(): Promise<void> {
+            let user: object
+            this.isLogIn = true
+            user = {
+                "data": this.authUser,
+                "isLogin": false
+            }
+            localStorage.setItem("user", JSON.stringify(user))
         }
     }
 })

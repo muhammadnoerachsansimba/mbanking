@@ -1,6 +1,5 @@
-import { RegistrationModel } from "@/models/RegistrationModel"
-// import { defineStore } from "pinia"
 import axios from "axios"
+import { useAuthStore } from "@/stores/auth"
 
 type Gender = "M" | "F"
 
@@ -15,43 +14,23 @@ export class AuthViewModel {
     btnRegistDisable = false
     loading = false
     
-    auth: Auth = {
-        first_name: "",
-        last_name: "",
-        username: "",
-        password: "",
-    }
+    auth = new Auth
+    authStore = useAuthStore()
 
-    async login() {
+    async login(): Promise<any> {
         try {
-            const response = await axios.get("http://localhost:4500/sign_in", {
-                params: {
-                    username: this.auth.username,
-                    password: this.auth.password
-                }
-            })
-            return response.data
+            const data = this.authStore.login(this.auth.username, this.auth.password)
+            return data
         } catch(error) {
-            error = "Something error"
-            return error
+            return "Something error"
         }
-        // defineStore("auth", {
-        //     state: () => ({
-        //         authUser: null,
-        //     }),
-        //     getters: {
-        //         user: (state) => state.authUser,
-        //     },
-        //     actions: {
-        //         async getUser() {
-        //             const data = await axios.get("/sign_in")
-        //         }
-        //     }
-        // })
     }
 
-    async registration() {
-        let message: string
+    async logout(): Promise<void> {
+        return this.authStore.logout()
+    }
+
+    async registration(): Promise<string> {
         let data = {
             first_name: this.auth.first_name,
             last_name: this.auth.last_name,
@@ -60,13 +39,16 @@ export class AuthViewModel {
             created_at: new Date
         }
         try {
+            this.btnRegistDisable = true
             const response = await axios.post("http://localhost:4500/create_account", data)
-            if(response.status == 200) {
-                this.btnRegistDisable = true
-                return message = "Success"
+            if(response.status != 200) {
+                return "Failed"
+                this.btnRegistDisable = false
             }
+            return "Success"
         } catch(error) {
-            return message = "Failed"
+            return "Something error"
+            this.btnRegistDisable = false
         }
     }
 }

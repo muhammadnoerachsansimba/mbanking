@@ -3,24 +3,28 @@
     import { useRouter } from "vue-router"
     import TextInput from "@/components/Text.input.vue"
     import Title from "@/components/Title.vue"
-    import { useAuthStore } from "@/stores/auth"
+    import { AuthViewModel } from "./Auth.viewmodel"
 
-    const router = useRouter();
-    const auth = useAuthStore()
+    const router = useRouter()
+    const vm = ref(new AuthViewModel())
+    const user = JSON.parse(localStorage.getItem("user") || "{}")
 
-    if(auth.isLogIn == true) {
+    if(user.isLogin == true) {
         router.push({
             path: "/home"
         })
     }
-    async function login() {
-        const data = await auth.login()
-        if(data.length > 0) {
+    
+    async function login(): Promise<void> {
+        try {
+            await vm.value.login()
             router.push({
                 path: "/home"
             })
-        } else {
-            alert("Sorry, username and password is wrong!")
+        } catch(e) {
+            if(e instanceof Error) {
+                alert(e.message)
+            }
         }
     }
 
@@ -50,15 +54,16 @@
                         <TextInput
                             type="text"
                             placeholder="Username"
-                            :value="auth.username"
-                            @input="(v) => (auth.username = v)"
+                            :value="vm.auth.username"
+                            @input="(v) => (vm.auth.username = v)"
                         />
 
                         <TextInput
                             type="password"
                             placeholder="Password"
-                            :value="auth.password"
-                            @input="(v) => (auth.password = v)"
+                            :value="vm.auth.password"
+                            @input="(v) => (vm.auth.password = v)"
+                            @keypress.enter="login"
                         />
                     </div>
 
