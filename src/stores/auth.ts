@@ -1,29 +1,28 @@
 import { defineStore } from "pinia"
 import axios from "axios"
 
-export class User {
-    username: string = ""
-    password: string = ""
-}
-
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        authUser: null as User | null,
+        authUser: null,
         isLogIn: false
     }),
     getters: {
         user: (state) => state.authUser
     },
     actions: {
-        async login(username: string, password: string): Promise<any> {
-            if(username != "" || password != "") {
-                let user: object
+        async login(username: string, password: string): Promise<string> {
+            if(username === "" || password === "") {
+                throw new Error("Username or Password is empty!")
+            }
+
+            try {
                 const data = await axios.get("http://localhost:4500/sign_in", {
                     params: {
                         username: username,
                         password: password
                     }
                 })
+<<<<<<< Updated upstream
                 this.isLogIn = true
                 this.authUser = data.data[0]
                 user = {
@@ -34,9 +33,21 @@ export const useAuthStore = defineStore("auth", {
                 return this.authUser
             } else {
                 throw new Error("Username or Password is empty!")
+=======
+                let user: object
+                this.isLogIn = true
+                user = {
+                    "data": data.data[0],
+                    "isLogin": this.isLogIn
+                }
+                localStorage.setItem("user", JSON.stringify(user))
+                return "Success"
+            } catch (e) {
+                throw new Error("Username or password is wrong!")
+>>>>>>> Stashed changes
             }
         },
-        async logout(): Promise<void> {
+        logout(): void {
             let user: object
             this.isLogIn = true
             user = {
@@ -44,6 +55,13 @@ export const useAuthStore = defineStore("auth", {
                 "isLogin": false
             }
             localStorage.setItem("user", JSON.stringify(user))
+        },
+        getUser(): any {
+            if(this.authUser === undefined) {
+                return "You must be login!"
+            }
+            this.authUser = JSON.parse(localStorage.getItem("user") || "{}")
+            return this.authUser
         }
     }
 })

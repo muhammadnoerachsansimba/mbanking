@@ -9,24 +9,31 @@
     const vm = ref(new AuthViewModel());
     const error = ref(false)
 
-    async function registration() {
-        if(vm.value.auth.password.length < 6) {
+    async function registration(): Promise<void> {
+        if(vm.value.regist.password.length < 6) {
             error.value = true
-        } else {
-            error.value = false
+        }
+        error.value = false
+        try{
             const res = await vm.value.registration()
-            if(res == "Success") {
-                alert(res)
-                router.push({
-                    path: "/"
-                })
-            } else {
-                alert(res)
-            }
+            alert(res)
+            router.push({
+                path: "/"
+            })
+        } catch(error) {
+            alert(error)
         }
     }
 
-    async function backToLogin() {
+    function checkInput(): void {
+        if(vm.value.regist.first_name !== "" && vm.value.regist.last_name !== "" && vm.value.regist.username !== "" && vm.value.regist.password !== "" && vm.value.regist.password.length > 6) {
+            vm.value.btnRegistDisable = false
+        } else {
+            vm.value.btnRegistDisable = true
+        }
+    }
+
+    function backToLogin(): void {
         router.push({
             path: "/"
         })
@@ -52,30 +59,34 @@
                         <TextInput
                             type="text"
                             placeholder="First Name"
-                            :value="vm.auth.first_name"
-                            @input="(v) => (vm.auth.first_name = v)"
+                            :value="vm.regist.first_name"
+                            @input="(v) => (vm.regist.first_name = v)"
+                            @change="checkInput"
                         />
 
                         <TextInput
                             type="text"
                             placeholder="Last Name"
-                            :value="vm.auth.last_name"
-                            @input="(v) => (vm.auth.last_name = v)"
+                            :value="vm.regist.last_name"
+                            @input="(v) => (vm.regist.last_name = v)"
+                            @change="checkInput"
                         />
 
                         <TextInput
                             type="text"
                             placeholder="Username"
-                            :value="vm.auth.username"
-                            @input="(v) => (vm.auth.username = v)"
+                            :value="vm.regist.username"
+                            @input="(v) => (vm.regist.username = v)"
+                            @change="checkInput"
                         />
 
                         <div>
                             <TextInput
                                 type="password"
                                 placeholder="Password"
-                                :value="vm.auth.password"
-                                @input="(v) => (vm.auth.password = v)"
+                                :value="vm.regist.password"
+                                @input="(v) => (vm.regist.password = v)"
+                                @change="checkInput"
                             />
                             <p class="text-xs text-red-600 ml-2 mt-1" :class="error ? '' : 'hide'">min.6 character</p>
                         </div>
@@ -85,7 +96,7 @@
                         <button
                             type="button"
                             class="w-[22rem] font-normal text-md text-white py-3 rounded-2xl"
-                            :class="vm.auth.first_name != '' && vm.auth.last_name != '' && vm.auth.username != '' && vm.auth.password != '' ? 'bg-[#1EB17D]' : 'bg-[#1eb17d4b]'"
+                            :class="vm.btnRegistDisable == false ? 'bg-[#1EB17D]' : 'bg-[#1eb17d4b]'"
                             :disabled="vm.btnRegistDisable"
                             @click="registration"
                         >

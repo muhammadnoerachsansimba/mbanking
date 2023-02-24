@@ -1,20 +1,24 @@
 import axios from "axios"
 import { useAuthStore } from "@/stores/auth"
 
-type Gender = "M" | "F"
-
 export class Auth {
-    first_name: string = ""
-    last_name: string = ""
     username: string = ""
     password: string = ""
 }
 
+export class Registration {
+    first_name: string = ""
+    last_name: string = ""
+    username: string = ""
+    password: string = ""
+    created_at: Date = new Date
+}
+
 export class AuthViewModel {
-    btnRegistDisable = false
+    btnRegistDisable = true
     loading = false
-    
     auth = new Auth
+    regist = new Registration
     authStore = useAuthStore()
 
     async login(): Promise<any> {
@@ -31,24 +35,22 @@ export class AuthViewModel {
     }
 
     async registration(): Promise<string> {
-        let data = {
-            first_name: this.auth.first_name,
-            last_name: this.auth.last_name,
-            username: this.auth.username,
-            password: this.auth.password,
-            created_at: new Date
-        }
         try {
             this.btnRegistDisable = true
-            const response = await axios.post("http://localhost:4500/create_account", data)
-            if(response.status != 200) {
-                return "Failed"
+            const response = await axios.post("http://localhost:4500/create_account", this.regist)
+            if(response.status !== 200) {
                 this.btnRegistDisable = false
+                throw new Error("Failed")
             }
             return "Success"
         } catch(error) {
-            return "Something error"
             this.btnRegistDisable = false
+            throw new Error("Something error")
         }
+    }
+
+    getUser(): any {
+        let user = this.authStore.getUser()
+        return user
     }
 }
