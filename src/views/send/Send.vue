@@ -102,7 +102,7 @@
                         type="text"
                         :value="vm.dataSend.reciver"
                         @input="(v) => (vm.dataSend.reciver = v)"
-                        placeholder="Receiver number"
+                        placeholder="Receiver"
                         class="rounded-lg"
                         />
                     <TextInput

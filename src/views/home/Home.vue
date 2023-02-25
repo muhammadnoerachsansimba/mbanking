@@ -1,34 +1,13 @@
 <script setup lang="ts">
     import { onBeforeMount, onMounted, ref } from 'vue'
     import { useRouter } from 'vue-router'
-<<<<<<< Updated upstream
-    import { useAuthStore } from '@/stores/auth'
-=======
     import { HomeViewModel } from "./Home.viewmodel"
     import NavbarMenu from '@/components/NavbarMenu.vue'
->>>>>>> Stashed changes
     import TextHeader from '@/components/TextHeader.vue'
-    import { AuthViewModel } from "../auth/Auth.viewmodel"
-    import { ref } from 'vue';
+    import History from '@/components/History.vue'
+    import Card from '@/components/Card.vue'
 
     const router = useRouter()
-<<<<<<< Updated upstream
-    const auth = useAuthStore()
-    const user = JSON.parse(localStorage.getItem("user") || '{}')
-    const vm = ref(new AuthViewModel())
-
-    if(user.isLogin  == false) {
-        router.push({
-            path: "/"
-        })
-    }
-    
-    async function logout(): Promise<void> {
-        vm.value.logout()
-        router.push({
-            path: "/"
-        })
-=======
     const vm = ref(new HomeViewModel)
     const cards = ref()
     const transactions = ref()
@@ -44,7 +23,6 @@
     async function getTrasaction() {
         const res = await vm.value.getTransaction()
         transactions.value = res
->>>>>>> Stashed changes
     }
 
     onMounted(async () => {
@@ -54,12 +32,6 @@
 
 <template>
     <div>
-<<<<<<< Updated upstream
-        <TextHeader />
-        <button type="button" @click="logout">
-            logout
-        </button>
-=======
         <nav>
             <NavbarMenu />
         </nav>
@@ -73,9 +45,9 @@
 
         <main class="mb-28">
             <div class="cards flex overflow-x-scroll scrollbar-hide scrollbar-none">
-                <div v-for="card in cards" :key="card.id">
+                <div v-for="card in cards">
                     <div class="Card mx-10 max-sm:mx-5" @click="vm.card.id = card.id; getTrasaction();">
-                        <div class="Card flex justify-between text-white w-96 rounded-lg bg-gradient-to-tl" :class="card.from+' '+card.via+' '+card.to">
+                        <div class="Card flex justify-between text-white w-96 rounded-lg bg-gradient-to-tl " :class="card.from+' '+card.via+' '+card.to">
                             <Card>
                                 <template #card-header>
                                     <TextHeader>
@@ -162,12 +134,12 @@
                     </template>
 
                     <template #history-nominal>
-                        <p class="font-medium text-xl py-2">-{{ new Intl.NumberFormat().format(transaction.payment) }}</p><!-- ${{ new Intl.NumberFormat().format(trans.payment) }} -->
+                        <p class="font-medium text-xl py-2" v-if="transaction.transaction_type === 'transfer'">-{{ new Intl.NumberFormat().format(transaction.payment) }}</p><!-- ${{ new Intl.NumberFormat().format(trans.payment) }} -->
+                        <p class="font-medium text-xl py-2" v-else>+{{ new Intl.NumberFormat().format(transaction.payment) }}</p><!-- ${{ new Intl.NumberFormat().format(trans.payment) }} -->
                     </template>
                 </History>
             </div>
         </main>
->>>>>>> Stashed changes
     </div>
 </template>
 

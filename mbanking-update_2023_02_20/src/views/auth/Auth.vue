@@ -1,25 +1,25 @@
 <script setup lang="ts">
-    import { onBeforeMount, onMounted, Ref, ref } from "vue"
+    import { onMounted, Ref, ref } from "vue"
     import { useRouter } from "vue-router"
-    import { AuthViewModel } from "./Auth.viewmodel"
     import TextInput from "@/components/Text.input.vue"
     import Title from "@/components/Title.vue"
+    import { useAuthStore } from "@/stores/auth"
+    import { AuthViewModel } from "./Auth.viewmodel"
 
     const router = useRouter()
+    const auth = useAuthStore()
     const vm = ref(new AuthViewModel())
+    const user = JSON.parse(localStorage.getItem("user") || "{}")
 
-    onBeforeMount(() => {
-        if(vm.value.getUser().isLogin === true) {
-            router.push({
-                path: "/home"
-            })
-        }
-    })
+    if(user.isLogin == true) {
+        router.push({
+            path: "/home"
+        })
+    }
     
-    async function login(): Promise<void> {
+    async function login() {
         try {
-            const res = await vm.value.login()
-            alert("Success")
+            await vm.value.login()
             router.push({
                 path: "/home"
             })
@@ -30,7 +30,7 @@
         }
     }
 
-    function registration(): void {
+    async function registration() {
         router.push({
             path: "/registration"
         })

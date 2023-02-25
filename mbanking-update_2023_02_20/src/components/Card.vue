@@ -1,10 +1,11 @@
 <script setup lang="ts">
+    import TextHeader from "@/components/TextHeader.vue"
 </script>
 
 <template>
     <!-- <div class="Card mx-5"> -->
         <!-- <div class="Card flex justify-between px-5 py-5 w-96 h-52 max-h-52 rounded-lg bg-zinc-100 border-2 border-emerald-500 border-dashed"> bg-gradient-to-br from-emerald-900 via-emerald-700 to-emerald-500 w-96 h-52 max-h-60 rounded-lg text-white" || hover:from-emerald-700 hover:via-emerald-500 hover:to-emerald-300 -->
-            <div class="card-right flex-col justify-between w-full">
+            <div class="card-right flex flex-col justify-between w-full">
                 <slot name="card-header"></slot>
                 <slot name="card-body">
                     <div class="text-center mx-auto my-auto">
@@ -20,4 +21,6 @@
     </div> -->
 </template>
 
-<style scoped></style>
+<style>
+
+</style>

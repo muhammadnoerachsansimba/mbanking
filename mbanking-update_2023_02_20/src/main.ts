@@ -26,15 +26,14 @@ import {
     faMagnifyingGlass,
     faHouse,
     faArrowTrendUp,
-    faArrowLeftLong,
-    faGear
+    faArrowLeftLong
 } from "@fortawesome/free-solid-svg-icons"
 
 // import fontawesome regular icon
 import {
-    faUser,
     faBell,
-    faCreditCard
+    faCreditCard,
+    faUser
 } from "@fortawesome/free-regular-svg-icons"
 
 // import fontawesome brand icon
@@ -50,8 +49,7 @@ library.add(
     faCreditCard,
     faHouse,
     faArrowTrendUp,
-    faArrowLeftLong,
-    faGear
+    faArrowLeftLong
 )
 
 // inisialize pinia

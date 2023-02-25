@@ -22,29 +22,16 @@ export const useAuthStore = defineStore("auth", {
                         password: password
                     }
                 })
-<<<<<<< Updated upstream
                 this.isLogIn = true
                 this.authUser = data.data[0]
-                user = {
+                let user = {
                     "data": this.authUser,
                     "isLogin": this.isLogIn
                 }
                 localStorage.setItem("user", JSON.stringify(user))
-                return this.authUser
-            } else {
-                throw new Error("Username or Password is empty!")
-=======
-                let user: object
-                this.isLogIn = true
-                user = {
-                    "data": data.data[0],
-                    "isLogin": this.isLogIn
-                }
-                localStorage.setItem("user", JSON.stringify(user))
-                return "Success"
+                return data.data[0]
             } catch (e) {
                 throw new Error("Username or password is wrong!")
->>>>>>> Stashed changes
             }
         },
         logout(): void {
